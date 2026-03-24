@@ -7,24 +7,37 @@ import { siteContent } from '@/data/site-content'
 
   <div class="container mx-auto relative z-10">
     <div class="flex flex-col md:flex-row items-center gap-16">
-      <div class="w-full md:w-1/2 mt-8 lg:mt-16">
+      <div class="w-full md:w-1/2 mt-8 lg:mt-16 flex justify-center relative">
+          <div class="absolute inset-0 bg-red-500/5 blur-[100px] rounded-full w-3/4 h-3/4 m-auto transform -translate-y-10 pointer-events-none"></div>
           <img
             src="/images/gabriel-boletta.png"
             alt="Head Coach Boleta"
-            class="relative z-10 w-full h-auto"
+            class="relative z-10 w-full max-w-lg h-auto drop-shadow-[0_0_40px_rgba(255,255,255,0.15)]"
           />
       </div>
 
-      <div class="w-full md:w-1/2 flex items-start justify-start flex-col gap-4">
-        <h2 class="text-sm font-bold text-neon-red uppercase tracking-widest">
-          {siteContent.home.about.title}
-        </h2>
-        <h3 class="text-4xl md:text-5xl font-black text-white uppercase leading-none">
-          {siteContent.home.about.headline}
-        </h3>
-        <p class="text-gray-400 text-lg leading-relaxed">
-          {siteContent.home.about.text}
-        </p>
+      <div class="w-full md:w-1/2 flex items-start justify-start flex-col gap-4 lg:gap-8">
+        <div class="flex flex-col gap-2">
+          <h2 class="text-sm font-bold text-neon-red uppercase tracking-widest">
+            {siteContent.home.about.title}
+          </h2>
+          <h3 class="text-4xl md:text-5xl font-black text-white uppercase leading-none">
+            {siteContent.home.about.headline}
+          </h3>
+        </div>
+        {Array.isArray(siteContent.home.about.text) ? (
+          <div class="flex flex-col gap-2">
+            {siteContent.home.about.text.map((paragraph) => (
+              <p class="text-gray-400 text-lg leading-relaxed">
+                {paragraph}
+              </p>
+            ))}
+          </div>
+        ) : (
+          <p class="text-gray-400 text-lg leading-relaxed">
+            {siteContent.home.about.text}
+          </p>
+        )}
 
         <div class="grid grid-cols-3 gap-8">
           {siteContent.home.about.stats.map(stat => (
