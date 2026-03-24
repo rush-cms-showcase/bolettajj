@@ -2,8 +2,8 @@ import type { NavItem, Social, Instructor, Review, Unit, FooterDoc, UnitFull, Mo
 
 export const siteContent = {
   global: {
-    name: "Boleta JJ",
-    tagline: "Jiu Jitsu Inteligente",
+    name: "Boletta JJ",
+    tagline: "Do Tatame Para a Vida",
     whatsapp: "5511999999999",
     whatsappLink: "https://wa.me/5511999999999",
   },
@@ -200,9 +200,12 @@ export const siteContent = {
       ] satisfies Instructor[],
     },
     about: {
-      title: "Sobre Nós",
+      title: "Do Tatame Para a Vida",
       headline: "Domine a técnica, fortaleça a mente.",
-      text: "A Boleta JJ não é apenas uma escola de luta. É um ambiente acolhedor de desenvolvimento humano. Nosso método combina a tradição do Jiu Jitsu com uma abordagem pedagógica moderna.",
+      text: [
+        "A Boleta JJ não é apenas uma escola de luta. É um ambiente acolhedor de desenvolvimento humano. Nosso método combina a tradição do Jiu Jitsu com uma abordagem pedagógica moderna.",
+        "Acreditamos que o Jiu Jitsu não é apenas uma prática física, mas uma jornada que molda caráter e fortalece a mente. Nossa missão é guiar cada aluno não apenas para a excelência no tatame, mas para uma vida plena, incorporando os valores aprendidos no dia a dia.",
+      ],
       stats: [
         { label: "Alunos Ativos", value: "200+" },
         { label: "Unidades", value: "2" },
@@ -245,12 +248,12 @@ export const siteContent = {
       list: [
         {
           name: "A Academia",
-          address: "Rua Exemplo, 123 - Caieiras/SP",
+          address: "Rua Marechal Arthur da Costa e Silva, 40, Poiares, Caraguatatuba - SP, CEP 11673-160",
           cta: "Traçar Rota",
         },
         {
           name: "O CT",
-          address: "Av. Central, 456 - Franco da Rocha/SP",
+          address: "Rua Hermes da Fonseca, 217, Poiares, Caraguatatuba - SP, CEP 11673-170",
           cta: "Traçar Rota",
         },
       ] satisfies Unit[],
