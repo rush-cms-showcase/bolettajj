@@ -1,0 +1,44 @@
+---
+import { siteContent } from '@/data/site-content'
+---
+
+<section class="py-24 bg-carbon" id="horarios">
+  <div class="container mx-auto px-6 text-center">
+    <h2 class="text-4xl font-black text-white uppercase tracking-tighter mb-4">
+      {siteContent.home.schedule.title}
+    </h2>
+    <p class="text-gray-400 mb-12">
+      {siteContent.home.schedule.subtitle}
+    </p>
+
+    <div class="max-w-4xl mx-auto bg-deep-black border border-white/10 p-4 md:p-8 relative overflow-hidden group hover:border-neon-red/30 transition-colors">
+      <div class="flex justify-between items-center text-xs text-gray-500 mb-8 border-b border-white/10 pb-4">
+        <span>07:00</span>
+        <span>12:00</span>
+        <span>18:00</span>
+        <span>20:00</span>
+      </div>
+
+      <div class="space-y-4">
+        <div class="flex items-center gap-4 p-4 bg-carbon/50 border-l-2 border-neon-red">
+          <span class="text-white font-bold">07:00</span>
+          <span class="text-gray-300">Jiu Jitsu - Todos os Níveis</span>
+        </div>
+        <div class="flex items-center gap-4 p-4 bg-carbon/50 border-l-2 border-white">
+          <span class="text-white font-bold">18:30</span>
+          <span class="text-gray-300">Jiu Jitsu - Kids</span>
+        </div>
+        <div class="flex items-center gap-4 p-4 bg-carbon/50 border-l-2 border-neon-red">
+          <span class="text-white font-bold">19:30</span>
+          <span class="text-gray-300">Jiu Jitsu - Avançado</span>
+        </div>
+      </div>
+
+      <div class="absolute inset-0 bg-black/60 backdrop-blur-[2px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <a href="/horarios" class="px-8 py-3 bg-neon-red text-white font-bold uppercase tracking-wider hover:bg-red-600">
+          {siteContent.home.schedule.cta}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

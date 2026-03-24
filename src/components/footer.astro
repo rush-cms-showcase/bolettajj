@@ -1,0 +1,69 @@
+---
+import { siteContent } from '@/data/site-content'
+import IconBrandInstagram from '~icons/tabler/brand-instagram'
+import IconBrandFacebook from '~icons/tabler/brand-facebook'
+import IconBrandYoutube from '~icons/tabler/brand-youtube'
+import IconBrandTiktok from '~icons/tabler/brand-tiktok'
+
+const socialIcons = {
+  instagram: IconBrandInstagram,
+  facebook: IconBrandFacebook,
+  youtube: IconBrandYoutube,
+  tiktok: IconBrandTiktok,
+} as const
+
+type SocialIconKey = keyof typeof socialIcons
+---
+
+<footer class="bg-gray-100 dark:bg-deep-black pt-20 pb-10 border-t border-gray-200 dark:border-white/10 transition-colors duration-300">
+  <div class="container mx-auto px-6">
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+      <div class="col-span-1 md:col-span-1">
+        <a href="/" class="text-2xl font-display font-black tracking-tighter uppercase block mb-4">
+          {siteContent.global.name}<span class="text-neon-red">.</span>
+        </a>
+        <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">
+          {siteContent.global.tagline}
+        </p>
+        <div class="flex space-x-4">
+          {siteContent.socials.map((social) => {
+            const IconComponent = socialIcons[social.icon as SocialIconKey]
+            return (
+              <a href={social.url} target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-neon-red transition-colors" aria-label={social.name}>
+                <IconComponent class="w-5 h-5" />
+              </a>
+            )
+          })}
+        </div>
+      </div>
+
+      <div>
+        <h4 class="font-bold text-gray-900 dark:text-white mb-4 uppercase text-sm tracking-wider">A Escola</h4>
+        <ul class="space-y-2">
+          {siteContent.navigation.map((item) => (
+            <li><a href={item.href} class="text-sm text-gray-500 dark:text-gray-400 hover:text-neon-red transition-colors">{item.label}</a></li>
+          ))}
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="font-bold text-gray-900 dark:text-white mb-4 uppercase text-sm tracking-wider">Legal</h4>
+        <ul class="space-y-2">
+          <li><span class="text-sm text-gray-500 dark:text-gray-400">{siteContent.footer.cnpj}</span></li>
+          {siteContent.footer.docs.map((doc) => (
+            <li><a href={doc.href} class="text-sm text-gray-500 dark:text-gray-400 hover:text-neon-red transition-colors">{doc.label}</a></li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <div class="border-t border-gray-200 dark:border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+      <p class="text-xs text-gray-500 dark:text-gray-400">
+        {siteContent.footer.copyright}
+      </p>
+      <p class="text-xs text-gray-500 dark:text-gray-400 flex items-center gap-1">
+        {siteContent.footer.developer} <a href="#" class="font-bold hover:text-neon-red transition-colors">{siteContent.footer.developerName}</a>
+      </p>
+    </div>
+  </div>
+</footer>

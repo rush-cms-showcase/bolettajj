@@ -1,0 +1,28 @@
+---
+interface Props {
+  title: string
+  subtitle?: string
+}
+
+const { title, subtitle } = Astro.props
+---
+
+<section class="relative pt-40 pb-20 bg-gray-100 dark:bg-deep-black overflow-hidden transition-colors duration-300">
+  <div class="absolute inset-0 z-0">
+    <div class="absolute bottom-0 left-0 w-full h-px bg-linear-to-r from-transparent via-neon-red to-transparent"></div>
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-px h-full bg-linear-to-b from-neon-red/20 to-transparent"></div>
+  </div>
+  <div class="container mx-auto px-6 relative z-10 text-center">
+    <div class="inline-flex items-center gap-2 mb-6">
+      <span class="w-8 h-px bg-neon-red"></span>
+      <span class="text-neon-red text-xs font-bold uppercase tracking-widest">Boleta JJ</span>
+      <span class="w-8 h-px bg-neon-red"></span>
+    </div>
+    <h1 class="text-5xl md:text-7xl font-black text-gray-900 dark:text-white uppercase tracking-tighter leading-none mb-6 transition-colors">
+      {title}
+    </h1>
+    {subtitle && (
+      <p class="text-gray-600 dark:text-gray-400 text-lg max-w-2xl mx-auto transition-colors">{subtitle}</p>
+    )}
+  </div>
+</section>

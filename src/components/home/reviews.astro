@@ -1,0 +1,39 @@
+---
+import { siteContent } from '@/data/site-content'
+---
+
+<section class="py-24 bg-deep-black overflow-hidden">
+  <div class="container mx-auto px-6">
+    <div class="text-center mb-16">
+      <h2 class="text-4xl font-black text-white uppercase tracking-tighter">
+        {siteContent.home.reviews.title}
+      </h2>
+    </div>
+
+    <div class="flex overflow-x-auto gap-6 pb-8 snap-x snap-mandatory scrollbar-hide">
+      {siteContent.home.reviews.items.map((review) => (
+        <div class="min-w-[300px] md:min-w-[400px] bg-carbon p-8 rounded-sm snap-center border border-white/5 relative">
+          <div class="absolute top-4 right-4 text-neon-red/20 text-6xl font-serif">"</div>
+
+          <div class="flex items-center gap-4 mb-6">
+            <div class="w-12 h-12 rounded-full bg-gray-700 overflow-hidden">
+              <div class="w-full h-full bg-gray-600 flex items-center justify-center text-xs text-white">img</div>
+            </div>
+            <div>
+              <h4 class="text-white font-bold">{review.name}</h4>
+              <span class="text-xs text-neon-red uppercase tracking-wider">{review.role}</span>
+            </div>
+          </div>
+
+          <p class="text-gray-400 text-sm leading-relaxed mb-4 relative z-10">
+            {review.text}
+          </p>
+
+          <div class="flex text-yellow-500 gap-1 text-sm">
+            {'★'.repeat(review.stars)}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>

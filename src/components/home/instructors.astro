@@ -1,0 +1,43 @@
+---
+import { siteContent } from '@/data/site-content'
+---
+
+<section class="py-24 bg-deep-black" id="instrutores">
+  <div class="container mx-auto px-6">
+    <div class="text-center mb-16">
+      <h2 class="text-4xl font-black text-white uppercase tracking-tighter mb-4">
+        {siteContent.home.instructors.title}
+      </h2>
+      <p class="text-gray-400 max-w-2xl mx-auto">
+        {siteContent.home.instructors.subtitle}
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {siteContent.home.instructors.team.map((instructor) => (
+        <div class="group relative overflow-hidden bg-carbon rounded-sm">
+          <div class="relative h-96 w-full overflow-hidden">
+            <img
+              src={instructor.image}
+              alt={instructor.name}
+              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0"
+            />
+            <div class="absolute inset-0 bg-linear-to-t from-deep-black via-transparent to-transparent opacity-90"></div>
+          </div>
+
+          <div class="absolute bottom-0 left-0 w-full p-8 z-20 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+            <h3 class="text-3xl font-black text-white uppercase italic leading-none mb-2">
+              {instructor.name}
+            </h3>
+            <p class="text-neon-red text-xs font-bold uppercase tracking-widest mb-4">
+              {instructor.role}
+            </p>
+            <p class="text-gray-400 text-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">
+              {instructor.bio}
+            </p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
