@@ -1,0 +1,29 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import IconHome from '~icons/tabler/home'
+---
+
+<Layout
+  title="Página Não Encontrada - Boleta JJ"
+  description="A página que você está procurando não existe."
+>
+  <section class="pt-40 pb-20 min-h-[80vh] flex flex-col items-center justify-center text-center">
+    <div class="container mx-auto px-6 flex flex-col gap-2 lg:gap-4 items-center">
+      <span class="text-neon-red font-black text-9xl md:text-[150px] leading-none drop-shadow-lg">404</span>
+      <h1 class="text-3xl md:text-5xl font-black text-white uppercase tracking-tighter">
+        Fim de Luta!
+      </h1>
+      <p class="text-gray-400 text-lg max-w-md mx-auto">
+        Parece que você saiu do tatame ou essa página foi finalizada.
+        <br />O caminho que você buscou não existe.
+      </p>
+      <a 
+        href="/" 
+        class="inline-flex items-center gap-3 px-4 py-3 mt-4 bg-neon-red hover:bg-red-600 text-white font-bold tracking-wider uppercase rounded-sm transition-all hover:shadow-[0_0_20px_rgba(255,51,51,0.5)] clip-path-slant"
+      >
+        <IconHome class="w-5 h-5" />
+        Voltar para a Home
+      </a>
+    </div>
+  </section>
+</Layout>
