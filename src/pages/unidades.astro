@@ -13,16 +13,22 @@ import IconNavigation from '~icons/tabler/navigation'
 
   <section class="py-16 bg-white dark:bg-deep-black transition-colors duration-300">
     <div class="container mx-auto px-6 flex flex-col gap-8">
-      {siteContent.unitsFull.map((unit, index) => (
+      {siteContent.home.units.list.map((unit, index) => {
+        const fullInfo = siteContent.unitsFull.find(u => u.name === unit.name)
+        return (
         <div class="flex flex-col md:flex-row overflow-hidden border border-gray-200 dark:border-white/10 hover:border-neon-red/30 dark:hover:border-neon-red/30 transition-colors group bg-gray-50 dark:bg-carbon shadow-sm dark:shadow-none">
           <div class="w-full md:w-1/2 h-72 md:h-auto min-h-[360px] relative">
-            <iframe
-              src={unit.mapsEmbedUrl}
-              class="w-full h-full border-0 grayscale group-hover:grayscale-0 transition-all duration-700"
-              allowfullscreen
-              loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade"
-            />
+            {fullInfo?.mapsEmbedUrl ? (
+              <iframe
+                src={fullInfo.mapsEmbedUrl}
+                class="w-full h-full border-0 grayscale group-hover:grayscale-0 transition-all duration-700"
+                allowfullscreen
+                loading="lazy"
+                referrerpolicy="no-referrer-when-downgrade"
+              />
+            ) : (
+              <div class="w-full h-full bg-gray-100 dark:bg-white/5 flex items-center justify-center text-gray-400">Mapa temporariamente indisponível</div>
+            )}
             <div class="absolute inset-0 pointer-events-none border-r border-gray-200 dark:border-white/10"></div>
           </div>
 
@@ -35,35 +41,39 @@ import IconNavigation from '~icons/tabler/navigation'
             <div class="flex flex-col gap-3">
               <div class="flex items-start gap-3 text-gray-600 dark:text-gray-400">
                 <IconMapPin class="w-5 h-5 text-neon-red mt-0.5 shrink-0" />
-                <span>{unit.address}, {unit.neighborhood} — {unit.city}</span>
+                <span>{unit.address}</span>
               </div>
-              <div class="flex items-center gap-3 text-gray-600 dark:text-gray-400">
-                <IconPhone class="w-5 h-5 text-neon-red shrink-0" />
-                <a href={unit.whatsappLink} class="hover:text-gray-900 dark:hover:text-white transition-colors">{unit.phone}</a>
-              </div>
+              {fullInfo && (
+                <div class="flex items-center gap-3 text-gray-600 dark:text-gray-400">
+                  <IconPhone class="w-5 h-5 text-neon-red shrink-0" />
+                  <a href={fullInfo.whatsappLink} class="hover:text-gray-900 dark:hover:text-white transition-colors">{fullInfo.phone}</a>
+                </div>
+              )}
             </div>
 
-            <div class="flex flex-col sm:flex-row gap-3 pt-2">
-              <a
-                href={`/${unit.slug}/horarios`}
-                class="flex items-center justify-center gap-2 px-6 py-3 bg-neon-red text-white text-sm font-bold uppercase tracking-wider hover:bg-red-600 transition-colors shadow-md hover:shadow-lg"
-              >
-                <IconCalendar class="w-4 h-4" />
-                Ver Horários
-              </a>
-              <a
-                href={unit.mapsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                class="flex items-center justify-center gap-2 px-6 py-3 border border-gray-300 dark:border-white/20 text-gray-700 dark:text-white text-sm font-bold uppercase tracking-wider hover:border-gray-900 dark:hover:border-white/60 hover:text-gray-900 dark:hover:text-white transition-colors"
-              >
-                <IconNavigation class="w-4 h-4" />
-                Como Chegar
-              </a>
-            </div>
+            {fullInfo && (
+              <div class="flex flex-col sm:flex-row gap-3 pt-2">
+                <a
+                  href={`/${fullInfo.slug}/horarios`}
+                  class="flex items-center justify-center gap-2 px-6 py-3 bg-neon-red text-white text-sm font-bold uppercase tracking-wider hover:bg-red-600 transition-colors shadow-md hover:shadow-lg"
+                >
+                  <IconCalendar class="w-4 h-4" />
+                  Ver Horários
+                </a>
+                <a
+                  href={fullInfo.mapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex items-center justify-center gap-2 px-6 py-3 border border-gray-300 dark:border-white/20 text-gray-700 dark:text-white text-sm font-bold uppercase tracking-wider hover:border-gray-900 dark:hover:border-white/60 hover:text-gray-900 dark:hover:text-white transition-colors"
+                >
+                  <IconNavigation class="w-4 h-4" />
+                  Como Chegar
+                </a>
+              </div>
+            )}
           </div>
         </div>
-      ))}
+      )})}
     </div>
   </section>
 </Layout>
