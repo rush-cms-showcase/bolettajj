@@ -1,0 +1,68 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import PageHero from '@/components/page-hero.astro'
+import { siteContent } from '@/data/site-content'
+import IconQuote from '~icons/tabler/quote'
+---
+
+<Layout title="Sobre Nós | Boleta JJ" description="Conheça a história, visão, missão e valores da Boleta JJ.">
+  <PageHero title="Sobre Nós" subtitle="Mais que uma escola, uma família." />
+
+  <section class="py-20 bg-white dark:bg-deep-black transition-colors duration-300">
+    <div class="container mx-auto px-6">
+      <div class="flex flex-col md:flex-row items-center gap-16 mb-24">
+        <div class="w-full md:w-1/2 relative group">
+          <div class="absolute -inset-4 bg-neon-red/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+          <img
+            src={siteContent.about.teamImage}
+            alt="Time Boleta JJ"
+            class="relative w-full rounded-sm shadow-2xl grayscale group-hover:grayscale-0 transition-all duration-700"
+          />
+        </div>
+        <div class="w-full md:w-1/2">
+          <h2 class="text-4xl md:text-5xl font-black text-gray-900 dark:text-white uppercase leading-none mb-8">
+            <span class="text-neon-red block text-lg font-bold tracking-widest mb-2">Quem Somos</span>
+            {siteContent.about.headline}
+          </h2>
+          <div class="prose prose-lg text-gray-600 dark:text-gray-400">
+            <p class="leading-relaxed">{siteContent.about.intro}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-24">
+        <div class="p-10 bg-gray-50 dark:bg-carbon border border-gray-200 dark:border-white/10 hover:border-neon-red/30 dark:hover:border-neon-red/30 transition-colors shadow-sm dark:shadow-none">
+          <h3 class="text-2xl font-black text-white uppercase mb-4 flex items-center gap-3">
+            <span class="w-8 h-1 bg-neon-red"></span>
+            Visão
+          </h3>
+          <p class="text-gray-600 dark:text-gray-400 leading-relaxed">{siteContent.about.vision}</p>
+        </div>
+        <div class="p-10 bg-gray-50 dark:bg-carbon border border-gray-200 dark:border-white/10 hover:border-neon-red/30 dark:hover:border-neon-red/30 transition-colors shadow-sm dark:shadow-none">
+          <h3 class="text-2xl font-black text-white uppercase mb-4 flex items-center gap-3">
+            <span class="w-8 h-1 bg-neon-red"></span>
+            Missão
+          </h3>
+          <p class="text-gray-600 dark:text-gray-400 leading-relaxed">{siteContent.about.mission}</p>
+        </div>
+      </div>
+
+      <div>
+        <h2 class="text-4xl font-black text-gray-900 dark:text-white uppercase text-center mb-16">Nossos Valores</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {siteContent.about.values.map((value, index) => (
+            <div class="relative p-8 border border-gray-200 dark:border-white/10 bg-white dark:bg-transparent hover:bg-gray-50 dark:hover:bg-carbon/50 transition-colors group">
+              <span class="absolute top-4 right-4 text-6xl font-black text-gray-100 dark:text-white/5 z-0 group-hover:text-neon-red/10 transition-colors">
+                {String(index + 1).padStart(2, '0')}
+              </span>
+              <div class="relative z-10">
+                <h3 class="text-xl font-black text-gray-900 dark:text-white uppercase mb-3">{value.title}</h3>
+                <p class="text-gray-600 dark:text-gray-400 text-sm">{value.text}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>

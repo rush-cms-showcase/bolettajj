@@ -1,0 +1,36 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import PageHero from '@/components/page-hero.astro'
+import { siteContent } from '@/data/site-content'
+import IconCalendar from '~icons/tabler/calendar'
+import IconArrowRight from '~icons/tabler/arrow-right'
+---
+
+<Layout title="Horários | Boleta JJ" description="Confira a grade de horários de Jiu Jitsu em nossas unidades.">
+  <PageHero title="Horários" subtitle="Escolha sua unidade e venha treinar." />
+
+  <section class="py-24 bg-white dark:bg-deep-black transition-colors duration-300">
+    <div class="container mx-auto px-6 max-w-4xl">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        {siteContent.unitsFull.map(unit => (
+          <a
+            href={`/${unit.slug}/horarios`}
+            class="group relative bg-gray-50 dark:bg-carbon border border-gray-200 dark:border-white/10 p-10 flex flex-col items-center text-center hover:border-neon-red/50 dark:hover:border-neon-red/50 transition-all duration-300 hover:-translate-y-1 shadow-sm hover:shadow-md dark:shadow-none"
+          >
+            <div class="w-16 h-16 rounded-full bg-gray-200 dark:bg-white/5 flex items-center justify-center mb-6 text-neon-red group-hover:bg-neon-red group-hover:text-white transition-colors duration-300">
+              <IconCalendar class="w-8 h-8" />
+            </div>
+            
+            <h2 class="text-2xl font-black text-gray-900 dark:text-white uppercase mb-2 group-hover:text-neon-red transition-colors">{unit.name}</h2>
+            <p class="text-gray-600 dark:text-gray-400 mb-8">{unit.city}</p>
+            
+            <span class="inline-flex items-center gap-2 text-sm font-bold text-gray-900 dark:text-white uppercase tracking-wider group-hover:gap-4 transition-all">
+              Ver Grade
+              <IconArrowRight class="w-4 h-4 text-neon-red" />
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>

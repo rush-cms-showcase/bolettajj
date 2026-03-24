@@ -1,0 +1,290 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import PageHero from '@/components/page-hero.astro'
+import { siteContent } from '@/data/site-content'
+
+export function getStaticPaths() {
+  return siteContent.unitsFull.map((unit) => ({
+    params: { slug: unit.slug },
+    props: { unit },
+  }))
+}
+
+const { unit } = Astro.props
+const schedule = siteContent.schedules[unit.slug as keyof typeof siteContent.schedules] ?? []
+
+const days = [
+  { key: 'monday', label: 'Seg' },
+  { key: 'tuesday', label: 'Ter' },
+  { key: 'wednesday', label: 'Qua' },
+  { key: 'thursday', label: 'Qui' },
+  { key: 'friday', label: 'Sex' },
+  { key: 'saturday', label: 'Sáb' },
+] as const
+
+type DayKey = typeof days[number]['key']
+
+const levelColors: Record<string, string> = {
+  iniciante: 'bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 border-blue-200 dark:border-blue-500/30',
+  intermediario: 'bg-purple-100 dark:bg-purple-500/20 text-purple-700 dark:text-purple-300 border-purple-200 dark:border-purple-500/30',
+  avancado: 'bg-red-100 dark:bg-neon-red/20 text-red-700 dark:text-red-300 border-red-200 dark:border-neon-red/30',
+  todos: 'bg-gray-100 dark:bg-white/10 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-white/20',
+  kids: 'bg-yellow-100 dark:bg-yellow-500/20 text-yellow-700 dark:text-yellow-300 border-yellow-200 dark:border-yellow-500/30',
+  baby: 'bg-green-100 dark:bg-green-500/20 text-green-700 dark:text-green-300 border-green-200 dark:border-green-500/30',
+}
+
+const levelLabels: Record<string, string> = {
+  iniciante: 'Iniciante',
+  intermediario: 'Intermediário',
+  avancado: 'Avançado',
+  todos: 'Todos os Níveis',
+  kids: 'Kids (5-10 anos)',
+  baby: 'Baby (3-5 anos)',
+}
+
+function getPeriod(time: string) {
+  const hour = parseInt(time.split(':')[0])
+  if (hour < 12) return 'manha'
+  if (hour < 19) return 'tarde'
+  return 'noite'
+}
+
+import IconSun from '~icons/tabler/sun'
+import IconSunset from '~icons/tabler/sunset'
+import IconMoon from '~icons/tabler/moon'
+
+const periods = [
+  { key: 'manha', label: 'Manhã', icon: IconSun, slots: schedule.filter(s => getPeriod(s.time) === 'manha') },
+  { key: 'tarde', label: 'Tarde', icon: IconSunset, slots: schedule.filter(s => getPeriod(s.time) === 'tarde') },
+  { key: 'noite', label: 'Noite', icon: IconMoon, slots: schedule.filter(s => getPeriod(s.time) === 'noite') },
+].filter(p => p.slots.length > 0)
+
+---
+
+<Layout title={`Horários — ${unit.name} | Boleta JJ`} description={`Grade de horários da unidade ${unit.name} da Boleta JJ.`}>
+  <PageHero title={`Horários — ${unit.name}`} subtitle={`${unit.address}, ${unit.neighborhood} — ${unit.city}`} />
+
+  <section class="py-16 bg-white dark:bg-deep-black transition-colors duration-300">
+    <div class="container mx-auto px-6">
+
+      <div class="flex flex-col md:flex-row gap-4 mb-12">
+        <div class="relative flex-1">
+          <input
+            id="schedule-search"
+            type="text"
+            placeholder="Buscar treino (ex: No-Gi, Infantil, Adulto...)"
+            class="w-full bg-gray-50 dark:bg-carbon border border-gray-200 dark:border-white/10 text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 px-5 py-4 pr-12 focus:outline-none focus:border-neon-red transition-colors text-sm"
+          />
+          <svg class="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+        </div>
+        <div class="flex gap-2 flex-wrap">
+          {(['todos', 'iniciante', 'intermediario', 'avancado', 'kids'] as const).map(level => (
+            <button
+              data-filter={level}
+              class="filter-btn px-4 py-2 text-xs font-bold uppercase tracking-wider border transition-colors border-gray-200 dark:border-white/20 text-gray-500 dark:text-gray-400 hover:border-neon-red hover:text-neon-red"
+            >
+              {levelLabels[level]}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-16">
+        {periods.map(period => (
+          <div class="period-section" data-period={period.key}>
+            <div class="flex items-center gap-4 mb-8">
+              <period.icon class="w-8 h-8 text-neon-red" />
+              <h2 class="text-2xl font-black text-gray-900 dark:text-white uppercase tracking-tighter">{period.label}</h2>
+              <div class="flex-1 h-px bg-gray-200 dark:bg-white/10"></div>
+            </div>
+
+            <div class="grid grid-cols-1 gap-4">
+              {period.slots.map(slot => (
+                <div class="schedule-row group" data-time={slot.time}>
+                  <div class="flex flex-col md:flex-row gap-2 md:gap-0">
+                    <div class="md:w-24 shrink-0 flex items-center">
+                      <span class="time-badge text-xl font-black text-gray-900 dark:text-white font-mono tabular-nums">
+                        {slot.time}
+                      </span>
+                    </div>
+
+                    <div class="flex-1 grid grid-cols-2 md:grid-cols-6 gap-2">
+                      {days.map(day => {
+                        const cls = slot[day.key as DayKey]
+                        return (
+                          <div class={`schedule-card relative rounded-sm border p-3 min-h-[80px] flex flex-col justify-between transition-all duration-200 ${cls ? levelColors[cls.level] : 'border-gray-100 dark:border-white/5 bg-transparent'}`} data-name={cls?.name ?? ''} data-level={cls?.level ?? ''}>
+                            <span class="text-xs font-bold uppercase tracking-wider opacity-50 mb-1 text-gray-400 dark:text-white/50">{day.label}</span>
+                            {cls ? (
+                              <div>
+                                <p class="text-xs font-semibold leading-tight">{cls.name}</p>
+                                <span class="text-[10px] opacity-70 mt-1 block">{levelLabels[cls.level]}</span>
+                              </div>
+                            ) : (
+                              <span class="text-xs text-gray-300 dark:text-white/10">—</span>
+                            )}
+                          </div>
+                        )
+                      })}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div id="no-results" class="hidden text-center py-20">
+        <p class="text-gray-500 text-lg">Nenhum treino encontrado para "<span id="search-term"></span>".</p>
+      </div>
+
+      <div class="mt-16 p-8 bg-gray-50 dark:bg-carbon border border-gray-200 dark:border-white/10 flex flex-col md:flex-row items-center justify-between gap-6">
+        <div>
+          <h3 class="text-xl font-black text-gray-900 dark:text-white uppercase mb-1">Quer treinar com a gente?</h3>
+          <p class="text-gray-600 dark:text-gray-400 text-sm">Primeira aula gratuita. Sem compromisso.</p>
+        </div>
+        <a
+          href={unit.whatsappLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="px-8 py-4 bg-neon-red text-white font-bold uppercase tracking-wider hover:bg-red-600 transition-colors whitespace-nowrap"
+        >
+          Agendar Aula Grátis
+        </a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  const searchInput = document.getElementById('schedule-search') as HTMLInputElement
+  const filterBtns = document.querySelectorAll<HTMLButtonElement>('.filter-btn')
+  const cards = document.querySelectorAll<HTMLElement>('.schedule-card')
+  const rows = document.querySelectorAll<HTMLElement>('.schedule-row')
+  const noResults = document.getElementById('no-results')
+  const searchTermEl = document.getElementById('search-term')
+
+  let activeFilter = ''
+  let searchQuery = ''
+
+  const now = new Date()
+  const currentHour = now.getHours()
+  const currentMinute = now.getMinutes()
+  const currentTotalMinutes = currentHour * 60 + currentMinute
+  
+  // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+  const currentDayIndex = now.getDay()
+  const daysMap = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']
+  const currentDayKey = daysMap[currentDayIndex]
+
+  // If today is Sunday, usually no classes, but let's handle it gracefully
+  if (currentDayKey !== 'sunday') {
+    rows.forEach(row => {
+      // Check if this row has a class for the current day
+      const dayColumn = row.querySelector(`.schedule-card:nth-child(${currentDayIndex})`) // Monday is index 0 in our loop but standard Day is 1
+      // Actually our days array is: monday, tuesday... saturday. 
+      // So Monday is index 0 in the map loop. 
+      // currentDayIndex: 1 (Mon) -> target index 0
+      
+      const targetIndex = currentDayIndex - 1 
+      if (targetIndex < 0 || targetIndex > 5) return // Sunday or invalid
+
+      const relevantCard = row.querySelectorAll('.schedule-card')[targetIndex]
+      const hasClass = relevantCard && !relevantCard.classList.contains('border-white/5')
+      
+      if (!hasClass) return
+
+      const time = row.dataset.time ?? ''
+      const [h, m] = time.split(':').map(Number)
+      const slotMinutes = h * 60 + m
+      
+      // Highlight if current time is within [slotTime - 15min, slotTime + 59min]
+      // Assuming classes last about an hour. 
+      // "Agora" logic: 
+      // 1. Class is happening now (started less than 60 mins ago)
+      // 2. Class is about to start (in next 15 mins)
+      
+      const diff = currentTotalMinutes - slotMinutes
+      
+      // If diff is between -15 (starts in 15m) and 60 (started 60m ago), it's "Agora"
+      if (diff >= -15 && diff < 60) {
+         row.querySelector('.time-badge')?.classList.add('text-neon-red')
+         const badge = document.createElement('span')
+         badge.className = 'ml-2 text-xs bg-neon-red text-white px-2 py-0.5 rounded-full font-bold animate-pulse'
+         badge.textContent = 'Agora'
+         row.querySelector('.time-badge')?.after(badge)
+         
+         // Also highlight the specific card for today
+         relevantCard.classList.add('ring-2', 'ring-neon-red', 'ring-offset-2', 'ring-offset-deep-black')
+      }
+    })
+  }
+
+  function applyFilters() {
+    let visibleCount = 0
+
+    rows.forEach(row => {
+      const rowCards = row.querySelectorAll<HTMLElement>('.schedule-card')
+      let rowHasVisible = false
+
+      rowCards.forEach(card => {
+        const name = (card.dataset.name ?? '').toLowerCase()
+        const level = card.dataset.level ?? ''
+        const hasClass = name.length > 0
+
+        const matchesSearch = !searchQuery || name.includes(searchQuery.toLowerCase())
+        const matchesFilter = !activeFilter || level === activeFilter
+
+        if (hasClass && matchesSearch && matchesFilter) {
+          card.style.opacity = '1'
+          rowHasVisible = true
+        } else if (hasClass) {
+          card.style.opacity = '0.15'
+        }
+      })
+
+      if (rowHasVisible || (!searchQuery && !activeFilter)) {
+        row.style.display = ''
+        visibleCount++
+      } else {
+        row.style.display = 'none'
+      }
+    })
+
+    if (noResults && searchTermEl) {
+      if (visibleCount === 0 && searchQuery) {
+        noResults.classList.remove('hidden')
+        searchTermEl.textContent = searchQuery
+      } else {
+        noResults.classList.add('hidden')
+      }
+    }
+  }
+
+  searchInput?.addEventListener('input', (e) => {
+    searchQuery = (e.target as HTMLInputElement).value
+    applyFilters()
+  })
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const filter = btn.dataset.filter ?? ''
+      if (activeFilter === filter) {
+        activeFilter = ''
+        btn.classList.remove('border-neon-red', 'text-neon-red')
+        btn.classList.add('border-white/20', 'text-gray-400')
+      } else {
+        filterBtns.forEach(b => {
+          b.classList.remove('border-neon-red', 'text-neon-red')
+          b.classList.add('border-white/20', 'text-gray-400')
+        })
+        activeFilter = filter
+        btn.classList.add('border-neon-red', 'text-neon-red')
+        btn.classList.remove('border-white/20', 'text-gray-400')
+      }
+      applyFilters()
+    })
+  })
+</script>

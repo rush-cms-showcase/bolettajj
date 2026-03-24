@@ -1,0 +1,132 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import PageHero from '@/components/page-hero.astro'
+import { siteContent } from '@/data/site-content'
+
+const tagLabels: Record<string, string> = {
+  infantil: 'Infantil',
+  adulto: 'Adulto',
+  'no-gi': 'No-Gi',
+  competicao: 'Competição',
+}
+
+const tagColors: Record<string, string> = {
+  infantil: 'bg-yellow-500/20 text-yellow-300 border-yellow-500/30',
+  adulto: 'bg-blue-500/20 text-blue-300 border-blue-500/30',
+  'no-gi': 'bg-purple-500/20 text-purple-300 border-purple-500/30',
+  competicao: 'bg-neon-red/20 text-red-300 border-neon-red/30',
+}
+
+const allTags = ['infantil', 'adulto', 'no-gi', 'competicao']
+---
+
+<Layout title="Modalidades | Boleta JJ" description="Conheça todas as modalidades da Boleta JJ: Jiu Jitsu Infantil, Adulto, No-Gi e mais.">
+  <PageHero title="Modalidades" subtitle="Do tatame infantil ao alto rendimento. Encontre sua turma." />
+
+  <section class="py-16 bg-white dark:bg-deep-black transition-colors duration-300">
+    <div class="container mx-auto px-6">
+      
+      <div class="flex flex-wrap gap-2 justify-center mb-12">
+        <button
+          class="filter-tag active px-6 py-2 rounded-full border border-neon-red bg-neon-red text-white text-sm font-bold uppercase tracking-wider transition-colors"
+          data-tag="all"
+        >
+          Todas
+        </button>
+        {allTags.map(tag => (
+          <button
+            class="filter-tag px-6 py-2 rounded-full border border-gray-300 dark:border-white/20 text-gray-500 dark:text-gray-400 hover:border-neon-red hover:text-neon-red text-sm font-bold uppercase tracking-wider transition-colors bg-white dark:bg-transparent"
+            data-tag={tag}
+          >
+            {tagLabels[tag]}
+          </button>
+        ))}
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {siteContent.modalidades.map((modality) => (
+          <div class="modality-card group bg-gray-50 dark:bg-carbon border border-gray-200 dark:border-white/10 hover:border-neon-red/30 dark:hover:border-neon-red/30 transition-colors overflow-hidden flex flex-col shadow-sm dark:shadow-none" data-tags={JSON.stringify(modality.tags)}>
+            <div class="h-64 relative overflow-hidden">
+              <img
+                src={modality.image}
+                alt={modality.title}
+                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0"
+              />
+              <div class="absolute inset-0 bg-linear-to-t from-gray-900/90 dark:from-deep-black via-transparent to-transparent"></div>
+              <div class="absolute bottom-4 left-4 flex gap-2 flex-wrap">
+                {modality.tags.map(tag => (
+                  <span class="px-2 py-1 bg-neon-red text-white text-[10px] font-bold uppercase tracking-wider rounded-sm">
+                    {tagLabels[tag]}
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div class="p-8 flex flex-col flex-1">
+              <h3 class="text-2xl font-black text-gray-900 dark:text-white uppercase mb-3 group-hover:text-neon-red transition-colors">
+                {modality.title}
+              </h3>
+              <p class="text-gray-600 dark:text-gray-400 text-sm mb-6 flex-1 border-b border-gray-200 dark:border-white/10 pb-6">
+                {modality.description}
+              </p>
+              
+              <div class="flex items-center justify-between mt-auto">
+                <div class="flex flex-col">
+                   <span class="text-[10px] text-gray-400 dark:text-gray-500 uppercase font-bold tracking-widest mb-1">Níveis</span>
+                   <div class="flex gap-1">
+                     {modality.levels.map(level => (
+                       <span class={`w-2 h-2 rounded-full ${level === 'Todos' ? 'bg-neon-red' : 'bg-gray-300 dark:bg-white/20'}`} title={level}></span>
+                     ))}
+                     <span class="text-xs text-gray-500 dark:text-gray-400 ml-1">{modality.levels.join(', ')}</span>
+                   </div>
+                </div>
+
+                <a
+                  href={siteContent.global.whatsappLink}
+                  target="_blank"
+                  class="text-neon-red font-bold uppercase text-xs tracking-wider border-b border-neon-red pb-0.5 hover:text-white hover:bg-neon-red hover:px-2 hover:border-transparent transition-all duration-300"
+                >
+                  Experimentar
+                </a>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div id="no-modalidades" class="hidden text-center py-20">
+        <p class="text-gray-500">Nenhuma modalidade encontrada para este filtro.</p>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  const filterBtns = document.querySelectorAll<HTMLButtonElement>('.tag-filter')
+  const cards = document.querySelectorAll<HTMLElement>('.modalidade-card')
+  const noResults = document.getElementById('no-modalidades')
+  let activeTag = 'all'
+
+  function applyFilter() {
+    let visible = 0
+    cards.forEach(card => {
+      const tags = (card.dataset.tags ?? '').split(',')
+      const matches = activeTag === 'all' || tags.includes(activeTag)
+      card.style.display = matches ? '' : 'none'
+      if (matches) visible++
+    })
+    noResults?.classList.toggle('hidden', visible > 0)
+  }
+
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeTag = btn.dataset.tag ?? 'all'
+      filterBtns.forEach(b => {
+        b.classList.remove('border-neon-red', 'text-neon-red', 'active-filter')
+        b.classList.add('border-white/20', 'text-gray-400')
+      })
+      btn.classList.add('border-neon-red', 'text-neon-red', 'active-filter')
+      btn.classList.remove('border-white/20', 'text-gray-400')
+      applyFilter()
+    })
+  })
+</script>

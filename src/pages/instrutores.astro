@@ -1,0 +1,38 @@
+---
+import Layout from '@/layouts/Layout.astro'
+import PageHero from '@/components/page-hero.astro'
+import { siteContent } from '@/data/site-content'
+---
+
+<Layout title="Instrutores | Boleta JJ" description="Conheça o corpo docente da Boleta JJ.">
+  <PageHero title="Corpo Docente" subtitle="Quem vive o Jiu Jitsu ensina com a alma." />
+
+  <section class="py-16 bg-white dark:bg-deep-black transition-colors duration-300">
+    <div class="container mx-auto px-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        {siteContent.home.instructors.team.map((instructor) => (
+          <div class="group relative overflow-hidden bg-gray-50 dark:bg-carbon border border-gray-200 dark:border-white/5 hover:border-neon-red/30 dark:hover:border-neon-red/30 transition-colors shadow-sm dark:shadow-none">
+            <div class="relative h-[480px] w-full overflow-hidden">
+              <img
+                src={instructor.image}
+                alt={instructor.name}
+                class="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105 grayscale group-hover:grayscale-0"
+              />
+              <div class="absolute inset-0 bg-linear-to-t from-gray-900/90 dark:from-deep-black via-transparent to-transparent"></div>
+            </div>
+
+            <div class="absolute bottom-0 left-0 w-full p-8">
+              <p class="text-neon-red text-xs font-bold uppercase tracking-widest mb-2">{instructor.role}</p>
+              <h3 class="text-3xl font-black text-white uppercase italic leading-none mb-3 drop-shadow-md">
+                {instructor.name}
+              </h3>
+              <p class="text-gray-200 dark:text-gray-400 text-sm leading-relaxed drop-shadow-sm">
+                {instructor.bio}
+              </p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+</Layout>
